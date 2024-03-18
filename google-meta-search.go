@@ -7,17 +7,12 @@ import (
 )
 
 func generateSearchURLs(domain string) []string {
-	formats := []string{"pdf", "doc", "docx", "dot", "odt", "rtf", "xls", "xlsx", "ods", "ppt", "pptx", "pps", "txt"}
-
-	// Additional search strings
-	searchStrings := []string{"Index of", ".yaml", ".htaccess", ".circleci", ".git", ".ssh", "id_rsa", "config.inc.php"}
+	formats := []string{"pdf", "doc", "docx", "dot", "odt", "rtf", "xls", "xlsx", "ods", "ppt", "pptx", "pps", "txt", ".yaml", ".htaccess", ".circleci", ".git", ".ssh", "id_rsa", "config.inc.php"}
 
 	var urls []string
 	for _, format := range formats {
-		for _, searchStr := range searchStrings {
-			url := fmt.Sprintf("https://www.google.com/search?q=site:%s+filetype:%s+%s", domain, format, searchStr)
-			urls = append(urls, url)
-		}
+		url := fmt.Sprintf("https://www.google.com/search?q=site:%s+filetype:%s", domain, format)
+		urls = append(urls, url)
 	}
 
 	return urls
@@ -77,3 +72,4 @@ func main() {
 
 	fmt.Println("HTML page generated successfully:", domain+"_search_results.html")
 }
+
