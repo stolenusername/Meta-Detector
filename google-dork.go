@@ -2,47 +2,48 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"net/url"
 	"os"
 	"strings"
 )
 
-func generateSearchURLs(domain string) []string {
-	dorkSearches := map[string]string{
-		"site:" + domain:                                "Site-specific search for domain",
-		"site:*.example.com":                            "Site-specific search for subdomains",
-		"filetype:pdf site:" + domain:                  "PDF files on domain",
-		"filetype:doc site:" + domain:                  "Word documents on domain",
-		"filetype:xls site:" + domain:                  "Excel spreadsheets on domain",
-		"filetype:txt site:" + domain:                  "Text files on domain",
-		"inurl:login.php site:" + domain:               "Login pages on domain",
-		"intitle:\"login page\" site:" + domain:        "Pages with 'login page' in title on domain",
-		"intext:\"username\" intext:\"password\" site:" + domain: "Pages containing 'username' and 'password' on domain",
-		"inurl:intitle:\"index of /\" site:" + domain:        "Directories listing files on domain",
-		"inurl:intitle:\"index of /backup\" site:" + domain:  "Backup directories on domain",
-		"inurl:intitle:\"index of /config\" site:" + domain:  "Configuration files on domain",
-		"inurl:intitle:\"phpinfo()\" site:" + domain:         "PHP configuration details on domain",
-		"inurl:intitle:\"Welcome to phpMyAdmin\" site:" + domain: "phpMyAdmin installations on domain",
-		"inurl:intitle:\"Welcome to OpenSSH\" site:" + domain: "OpenSSH installations on domain",
-		"inurl:intitle:\"Error Occurred\" OR intitle:\"Server Error\" site:" + domain: "Pages with error messages on domain",
-		"inurl:intext:\"MySQL error\" site:" + domain:        "MySQL error messages on domain",
-		"inurl:intitle:\"Welcome to nginx\" site:" + domain:  "nginx web server installations on domain",
-		"inurl:intitle:\"Apache2 Ubuntu Default Page\" site:" + domain: "Default Apache pages on Ubuntu on domain",
-		"inurl:intitle:\"Index of\" intext:\"Served by Serv-U\" site:" + domain: "Serv-U FTP servers on domain",
-		"inurl:intitle:\"Webcam Live Image\" site:" + domain: "Webcams broadcasting live images on domain",
-		"inurl:intitle:\"Network Camera NetworkCamera\" site:" + domain: "Network cameras on domain",
-		"inurl:intitle:\"Live View / - AXIS\" site:" + domain: "AXIS network cameras on domain",
+// readSearchConfig reads search parameters and descriptions from search.config file
+func readSearchConfig(filename string) (map[string]string, error) {
+	config := make(map[string]string)
+
+	data, err := ioutil.ReadFile(filename)
+	if err != nil {
+		return nil, err
 	}
 
+	lines := strings.Split(string(data), "\n")
+	for _, line := range lines {
+		if line == "" {
+			continue
+		}
+		parts := strings.Split(line, "|")
+		if len(parts) != 2 {
+			return nil, fmt.Errorf("Invalid search parameter format: %s", line)
+		}
+		config[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
+	}
+
+	return config, nil
+}
+
+// generateSearchURLs generates Google search URLs for the given domain based on search parameters
+func generateSearchURLs(domain string, searches map[string]string) []string {
 	var urls []string
-	for search, desc := range dorkSearches {
-		encodedSearch := url.QueryEscape(search)
+	for search, desc := range searches {
+		encodedSearch := url.QueryEscape(search + " site:" + domain)
 		url := fmt.Sprintf("https://www.google.com/search?q=%s", encodedSearch)
 		urls = append(urls, fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a>", url, desc))
 	}
 	return urls
 }
 
+// generateHTMLPage generates HTML page with search results
 func generateHTMLPage(domain string, urls []string) string {
 	var sb strings.Builder
 
@@ -77,9 +78,21 @@ func main() {
 	}
 
 	domain := os.Args[1]
-	urls := generateSearchURLs(domain)
+
+	// Read search parameters from search.config
+	searches, err := readSearchConfig("search.config")
+	if err != nil {
+		fmt.Println("Error reading search config:", err)
+		return
+	}
+
+	// Generate search URLs based on search parameters
+	urls := generateSearchURLs(domain, searches)
+
+	// Generate HTML page with search results
 	html := generateHTMLPage(domain, urls)
 
+	// Write HTML page to file
 	file, err := os.Create(domain + "_search_results.html")
 	if err != nil {
 		fmt.Println("Error creating HTML file:", err)
@@ -95,3 +108,4 @@ func main() {
 
 	fmt.Println("HTML page generated successfully:", domain+"_search_results.html")
 }
+
