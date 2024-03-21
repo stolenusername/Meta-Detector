@@ -85,7 +85,7 @@ func generateHTMLPage(domain string, urls []string) string {
 
 func main() {
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: go run main.go <domain>")
+		fmt.Println("Usage: ./meta-detector <domain>")
 		return
 	}
 
