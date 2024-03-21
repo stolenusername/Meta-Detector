@@ -1,5 +1,12 @@
 # Meta-Detector
 ![Meta Detector](images/meta-detector.jpg)
+<h3 style="text-align: center">
+
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-darkred.svg)](https://github.com/stolenusername/Meta-Detector/blob/main/LICENSE)
+[![made-with-Go](https://img.shields.io/badge/Made%20with-GoLang-blue.svg)](https://go.dev/)
+
+</h3>
 
 This program generates an HTML file containing Google Dork search queries based on the parameters specified in the `search.config` file. It allows users to easily perform Google Dork searches for various purposes, such as finding specific file types, directories, login pages, and sensitive information.
 
