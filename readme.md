@@ -43,7 +43,7 @@ For example, if the domain is `domain.com`, the program will generate an HTML fi
 
 ## Troubleshooting
 
-When using the Google Dork Search tool, there are a few things to keep in mind:
+When using Meta-Detector tool, there are a few things to keep in mind:
 
 ### Pop-up Blocker:
 Your browser's pop-up blocker might prevent the links from opening in new tabs. You may need to disable it or allow pop-ups for the current page to ensure that all links open successfully.
