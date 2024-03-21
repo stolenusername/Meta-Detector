@@ -1,4 +1,5 @@
 # Meta-Detector
+![Meta Detector](images/meta-detector.jpg)
 
 This program generates an HTML file containing Google Dork search queries based on the parameters specified in the `search.config` file. It allows users to easily perform Google Dork searches for various purposes, such as finding specific file types, directories, login pages, and sensitive information.
 
@@ -26,10 +27,22 @@ To update the `search.config` file:
 ## Usage
 
 1. Ensure that the `search.config` file is correctly configured with the desired search parameters.
-2. Run the program with the domain as an argument:
+2. Run the program with the domain as an argument: `./meta-detector domain.com`
 3. The program will generate an HTML file named `<domain>_search_results.html` containing the Google Dork search results for the specified domain.
 
 ### Example Output
 
 For example, if the domain is `domain.com`, the program will generate an HTML file named `domain.com_search_results.html` containing the Google Dork search results for `domain.com`.
 
+## Troubleshooting
+
+When using the Google Dork Search tool, there are a few things to keep in mind:
+
+### Pop-up Blocker:
+Your browser's pop-up blocker might prevent the links from opening in new tabs. You may need to disable it or allow pop-ups for the current page to ensure that all links open successfully.
+
+### "Prove You Are Not a Robot" Prompt:
+Due to the nature of how Google throttles Google Dork searches, you may encounter the "Prove You Are Not a Robot" prompt, especially if you're performing a large number of searches in a short period. If you encounter this prompt, you'll need to complete the CAPTCHA verification to continue.
+
+### Adjusting Delay:
+In the code, there's a delay set before each link is opened in a new tab. If you find that you are getting throttled by Google, you can adjust this delay. To do so, locate the following line in the code: `var delay = 1000; // 1 second delay`
