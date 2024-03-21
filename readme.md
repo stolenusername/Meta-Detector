@@ -36,6 +36,8 @@ To update the `search.config` file:
 1. Ensure that the `search.config` file is correctly configured with the desired search parameters.
 2. Run the program with the domain as an argument: `./meta-detector domain.com`
 3. The program will generate an HTML file named `<domain>_search_results.html` containing the Google Dork search results for the specified domain.
+4. Each link in the HTML file opens the Google search results in a new tab.
+5. There is a button at the bottom of the links to open all the links in new tabs at once.
 
 ### Example Output
 
