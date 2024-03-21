@@ -50,12 +50,12 @@ func generateHTMLPage(domain string, urls []string) string {
 	sb.WriteString("<!DOCTYPE html>\n")
 	sb.WriteString("<html>\n")
 	sb.WriteString("<head>\n")
-	sb.WriteString("<title>Google Dork Search Results for ")
+	sb.WriteString("<title>Meta-Detector Results for ")
 	sb.WriteString(domain)
 	sb.WriteString("</title>\n")
 	sb.WriteString("</head>\n")
 	sb.WriteString("<body>\n")
-	sb.WriteString("<h1>Google Dork Search Results for ")
+	sb.WriteString("<h1>Meta-Detector Results for ")
 	sb.WriteString(domain)
 	sb.WriteString("</h1>\n")
 	sb.WriteString("<ul>\n")
@@ -65,6 +65,18 @@ func generateHTMLPage(domain string, urls []string) string {
 		sb.WriteString("</li>\n")
 	}
 	sb.WriteString("</ul>\n")
+	sb.WriteString("<button onclick=\"openAllLinks()\">Open All Links in New Tab</button>\n")
+	sb.WriteString("<script>\n")
+	sb.WriteString("function openAllLinks() {\n")
+	sb.WriteString("    var links = document.getElementsByTagName('a');\n")
+	sb.WriteString("    var delay = 1000; // 1 second delay\n")
+	sb.WriteString("    for (var i = 0; i < links.length; i++) {\n")
+	sb.WriteString("        setTimeout(function(link) {\n")
+	sb.WriteString("            window.open(link.href, '_blank');\n")
+	sb.WriteString("        }, delay * i, links[i]);\n")
+	sb.WriteString("    }\n")
+	sb.WriteString("}\n")
+	sb.WriteString("</script>\n")
 	sb.WriteString("</body>\n")
 	sb.WriteString("</html>")
 
@@ -108,4 +120,3 @@ func main() {
 
 	fmt.Println("HTML page generated successfully:", domain+"_search_results.html")
 }
-
