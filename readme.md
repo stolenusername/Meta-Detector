@@ -1,4 +1,4 @@
-# Google Dork Search Generator
+# Meta-Detector
 
 This program generates an HTML file containing Google Dork search queries based on the parameters specified in the `search.config` file. It allows users to easily perform Google Dork searches for various purposes, such as finding specific file types, directories, login pages, and sensitive information.
 
