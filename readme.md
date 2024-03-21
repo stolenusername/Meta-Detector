@@ -10,6 +10,12 @@
 
 This program generates an HTML file containing Google Dork search queries based on the parameters specified in the `search.config` file. It allows users to easily perform Google Dork searches for various purposes, such as finding specific file types, directories, login pages, and sensitive information.
 
+## Downloading
+1. Create the desired directory on the sytem you will install Meta-Detector on.
+2. From the command line within that directory: `git clone https://github.com/stolenusername/Meta-Detector/`.
+3. `cd Meta-Detector`
+4. `go build meta-detector.go` (This step requires that you have Go installed on the system).
+
 ## How It Works
 
 1. The program reads search parameters and descriptions from the `search.config` file.
