@@ -1,16 +1,24 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"io/ioutil"
+	"net/http"
 	"net/url"
 	"os"
 	"strings"
 )
 
+// Search represents a search parameter and its description
+type Search struct {
+	Parameter   string
+	Description string
+}
+
 // readSearchConfig reads search parameters and descriptions from search.config file
-func readSearchConfig(filename string) (map[string]string, error) {
-	config := make(map[string]string)
+func readSearchConfig(filename string) ([]Search, error) {
+	var searches []Search
 
 	data, err := ioutil.ReadFile(filename)
 	if err != nil {
@@ -26,19 +34,33 @@ func readSearchConfig(filename string) (map[string]string, error) {
 		if len(parts) != 2 {
 			return nil, fmt.Errorf("Invalid search parameter format: %s", line)
 		}
-		config[strings.TrimSpace(parts[0])] = strings.TrimSpace(parts[1])
+		searches = append(searches, Search{
+			Parameter:   strings.TrimSpace(parts[0]),
+			Description: strings.TrimSpace(parts[1]),
+		})
 	}
 
-	return config, nil
+	return searches, nil
+}
+
+// downloadSearchConfig downloads the latest search.config from the provided URL
+func downloadSearchConfig(url string) ([]byte, error) {
+	resp, err := http.Get(url)
+	if err != nil {
+		return nil, err
+	}
+	defer resp.Body.Close()
+
+	return ioutil.ReadAll(resp.Body)
 }
 
 // generateSearchURLs generates Google search URLs for the given domain based on search parameters
-func generateSearchURLs(domain string, searches map[string]string) []string {
+func generateSearchURLs(domain string, searches []Search) []string {
 	var urls []string
-	for search, desc := range searches {
-		encodedSearch := url.QueryEscape(search + " site:" + domain)
+	for _, search := range searches {
+		encodedSearch := url.QueryEscape(search.Parameter + " site:" + domain)
 		url := fmt.Sprintf("https://www.google.com/search?q=%s", encodedSearch)
-		urls = append(urls, fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a>", url, desc))
+		urls = append(urls, fmt.Sprintf("<a href=\"%s\" target=\"_blank\">%s</a>", url, search.Description))
 	}
 	return urls
 }
@@ -84,8 +106,33 @@ func generateHTMLPage(domain string, urls []string) string {
 }
 
 func main() {
+	// Define command-line flags
+	downloadLatest := flag.Bool("download", false, "Download the latest search.config")
+	flag.Parse()
+
+	if *downloadLatest {
+		// Download the latest search.config
+		data, err := downloadSearchConfig("https://raw.githubusercontent.com/stolenusername/Meta-Detector/main/search.config")
+		if err != nil {
+			fmt.Println("Error downloading search.config:", err)
+			return
+		}
+
+		// Write the downloaded search.config to a file
+		err = ioutil.WriteFile("search.config", data, 0644)
+		if err != nil {
+			fmt.Println("Error writing search.config to file:", err)
+			return
+		}
+
+		fmt.Println("Latest search.config downloaded successfully")
+		return // Exit the program after downloading the search.config
+	}
+
 	if len(os.Args) < 2 {
-		fmt.Println("Usage: ./meta-detector <domain>")
+		fmt.Println("Usage: go run main.go <domain>")
+		fmt.Println("Options:")
+		flag.PrintDefaults()
 		return
 	}
 
@@ -120,3 +167,4 @@ func main() {
 
 	fmt.Println("HTML page generated successfully:", domain+"_search_results.html")
 }
+
