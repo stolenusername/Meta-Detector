@@ -36,6 +36,7 @@ To update the `search.config` file:
 1. Open the `search.config` file in a text editor.
 2. Add or modify the search parameters following the specified format (`<search_parameter> | <Description>`).
 3. Save the changes to the `search.config` file.
+4. The `search.config` file is frequently updated in this repo and you can download the latest version by running `./meta-detector --download`. Keep in mind this will overwrite any changes you have made to your local copy of `search.config`.
 
 ## Usage
 
