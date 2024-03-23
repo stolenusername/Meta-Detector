@@ -54,7 +54,7 @@ For example, if the domain is `domain.com`, the program will generate an HTML fi
 When using Meta-Detector tool, there are a few things to keep in mind:
 
 ### Pop-up Blocker:
-Your browser's pop-up blocker might prevent the links from opening in new tabs. You may need to disable it or allow pop-ups for the current page to ensure that all links open successfully.
+Your browser's pop-up blocker might prevent the links from opening in new tabs. You may need to disable it or allow pop-ups for the current page to ensure that all links open successfully. You can usually find this trigged on the main results page. A good indication that this is happening is only one tab opens and no aditional tabs are opening.
 
 ### "Prove You Are Not a Robot" Prompt:
 Due to the nature of how Google throttles Google Dork searches, you may encounter the "Prove You Are Not a Robot" prompt, especially if you're performing a large number of searches in a short period. If you encounter this prompt, you'll need to complete the CAPTCHA verification to continue.
