@@ -62,3 +62,29 @@ Due to the nature of how Google throttles Google Dork searches, you may encounte
 
 ### Adjusting Delay:
 In the code, there's a delay set before each link is opened in a new tab. If you find that you are getting throttled by Google, you can adjust this delay. To do so, locate the following line in the code: `var delay = 1000; // 1 second delay`
+
+### Meta-Spider
+
+Meta-Spider is an addon program for Meta-Detector that crawls a given domain name and searches for items specified in the `spider.config` file. When an item is found, it is logged to a text file called `domain.com-crawl.txt`.
+
+You can compile `meta-spider.go` with the following command:
+
+```sh
+go build meta-spider.go
+```
+
+### Running Meta-Spider
+
+Meta-Spider requires the following options:
+
+Options:
+- `-concurrency int`  
+  Concurrency level (default 10)
+- `-config string`  
+  Spider configuration file (default "spider.config")
+- `-depth int`  
+  Depth to spider (default 1)
+- `-domain string`  
+  Domain to spider
+
+  Meta-Spider is still in it's early stages and you may encounter issues. I'll address these as they are encountered.
